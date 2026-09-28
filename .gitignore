@@ -1,0 +1,25 @@
+# Build output
+**/[Bb]in/
+**/[Oo]bj/
+**/TestResults/
+**/artifacts/
+
+# Local IDE state
+.vs/
+*.user
+*.suo
+
+# Local configuration and secrets
+**/local.settings.json
+**/appsettings.Local.json
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+
+# Logs and operating system files
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,266 @@
+﻿@page
+@model AI200FoundryChat.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "AI-200 Foundry Chat";
+}
+
+<style>
+    body {
+        background: linear-gradient(180deg, #eef4ff 0%, #f8fbff 45%, #ffffff 100%);
+    }
+
+    .hero-section {
+        padding: 3rem 0 2rem 0;
+    }
+
+    .hero-card {
+        background: linear-gradient(135deg, #0d6efd 0%, #5b8cff 100%);
+        color: white;
+        border: none;
+        border-radius: 24px;
+        box-shadow: 0 20px 50px rgba(13, 110, 253, 0.20);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .hero-card::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.12);
+        top: -60px;
+        right: -60px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.18);
+        color: white;
+        padding: 0.45rem 0.9rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .main-card {
+        border: none;
+        border-radius: 22px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+        background: white;
+    }
+
+    .section-title {
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .section-subtitle {
+        color: #6b7280;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .chat-textarea {
+        border-radius: 16px;
+        border: 1px solid #dbe4f0;
+        padding: 1rem;
+        font-size: 1rem;
+        min-height: 180px;
+        resize: vertical;
+        box-shadow: none;
+    }
+
+    .chat-textarea:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    }
+
+    .quick-prompts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .prompt-chip {
+        border: 1px solid #dbe4f0;
+        background: #f8fbff;
+        color: #1f2937;
+        border-radius: 999px;
+        padding: 0.55rem 0.9rem;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+
+    .prompt-chip:hover {
+        background: #eaf2ff;
+        border-color: #b9d3ff;
+        transform: translateY(-1px);
+    }
+
+    .ask-btn {
+        border-radius: 14px;
+        padding: 0.85rem 1.4rem;
+        font-weight: 600;
+        box-shadow: 0 10px 24px rgba(13, 110, 253, 0.22);
+    }
+
+    .response-card {
+        border: none;
+        border-radius: 22px;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .response-header {
+        background: linear-gradient(135deg, #eaf2ff 0%, #f8fbff 100%);
+        border-bottom: 1px solid #e5edf7;
+        border-top-left-radius: 22px !important;
+        border-top-right-radius: 22px !important;
+        font-weight: 700;
+        color: #1f2937;
+    }
+
+    .response-text {
+        white-space: pre-wrap;
+        line-height: 1.7;
+        color: #1f2937;
+        font-size: 1rem;
+    }
+
+    .mini-info {
+        background: #f8fbff;
+        border: 1px solid #e5edf7;
+        border-radius: 18px;
+        padding: 1rem;
+        height: 100%;
+    }
+
+    .mini-info h6 {
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #1f2937;
+    }
+
+    .mini-info ul {
+        padding-left: 1.1rem;
+        margin-bottom: 0;
+        color: #4b5563;
+    }
+
+    .mini-info li {
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<div class="container py-4">
+
+    <section class="hero-section">
+        <div class="card hero-card">
+            <div class="card-body p-5">
+                <span class="hero-badge">Microsoft Foundry Demo</span>
+
+                <h1 class="display-5 fw-bold mb-3">AI-200 Foundry Chat</h1>
+
+                <p class="lead mb-0" style="max-width: 760px;">
+                    Enter a prompt, send it to a deployed AI model through Microsoft Foundry,
+                    and view the generated response in a clean chat-style interface.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card main-card">
+                <div class="card-body p-4 p-lg-5">
+
+                    <h3 class="section-title mb-1">Ask the AI model</h3>
+                    <p class="section-subtitle mb-4">
+                        Try a technical question, an explanation request, or a short summary prompt.
+                    </p>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Prompt" class="form-label">Your prompt</label>
+                            <textarea asp-for="Prompt"
+                                      class="form-control chat-textarea"
+                                      placeholder="For example: Explain Azure Container Apps in simple terms."></textarea>
+                            <span asp-validation-for="Prompt" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="small text-muted mb-2">Quick prompt ideas</div>
+
+                            <div class="quick-prompts">
+                                <button type="button" class="prompt-chip"
+                                        onclick="setPrompt('Explain Azure Container Apps in simple terms.')">
+                                    Explain Container Apps
+                                </button>
+
+                                <button type="button" class="prompt-chip"
+                                        onclick="setPrompt('Summarize the benefits of Azure Container Registry in 5 bullet points.')">
+                                    Summarize ACR
+                                </button>
+
+                                <button type="button" class="prompt-chip"
+                                        onclick="setPrompt('Compare containers and virtual machines for a beginner.')">
+                                    Compare containers vs VMs
+                                </button>
+
+                                <button type="button" class="prompt-chip"
+                                        onclick="setPrompt('What is model inference in Microsoft Foundry?')">
+                                    What is inference?
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary ask-btn">
+                            Ask AI
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="mini-info">
+                <h6>How this demo works</h6>
+                <ul>
+                    <li>The user enters a prompt in the web app.</li>
+                    <li>The ASP.NET Core app sends the prompt to Microsoft Foundry.</li>
+                    <li>The deployed model performs inference.</li>
+                    <li>The response is returned and shown in the browser.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.ModelResponse))
+    {
+        <div class="card response-card mt-4">
+            <div class="card-header response-header px-4 py-3">
+                AI Response
+            </div>
+            <div class="card-body p-4">
+                <div class="response-text">@Model.ModelResponse</div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        function setPrompt(text) {
+            document.getElementById("Prompt").value = text;
+        }
+    </script>
+}
